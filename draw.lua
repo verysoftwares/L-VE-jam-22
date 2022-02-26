@@ -10,7 +10,7 @@
 function draw2()
 end
 
-function draw()
+function logodraw()
     lg.setCanvas(main)
     bg(.9 +.4* ( t     *.1 *.2 *.6) %1, 
        .8 +.4* ((t+16) *.1 *.2 *.6) %1, 
@@ -63,4 +63,4 @@ function draw()
       -- lg.captureScreenshot(fmt('%d.png',t))
 end
 
-love.draw= draw
+love.draw= logodraw

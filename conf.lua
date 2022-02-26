@@ -2,13 +2,6 @@
 
 sw=12*36; sh=36*12
 scale=2
-debug=true
-
-if debug then
-local chunk = love.filesystem.load('buildno.soft')
-chunk()
-love.filesystem.write('buildno.soft',fmt('build=%d',build+1))
-end
 
 function love.conf(t)
     t.window.title = 'by verysoftwares'         -- The window title (string)

@@ -33,6 +33,32 @@ end
 function update(dt)
     if tapped('escape') then love.event.push('quit') end
 
+    leftheld=leftclick
+    leftclick=love.mouse.isDown(1)
+    mox,moy=love.mouse.getPosition()
+
+    if leftclick and not leftheld then
+        local h=0
+        for i=1,7,2 do
+        for j=1,i do
+            if AABB(mox/scale,moy/scale,1,1,sw/2-12-i/2*48+j*48,h*64+24,48,64) then
+            local pos=posstr(flr(-i/2+j),h)
+            print(pos)
+            end
+        end
+        h=h+1
+        end
+        for i=5,1,-2 do
+        for j=1,i do
+            if AABB(mox/scale,moy/scale,1,1,sw/2-12-i/2*48+j*48,h*64+24,48,64) then
+            local pos=posstr(flr(-i/2+j),h)
+            print(pos)
+            end
+        end
+        h=h+1
+        end
+    end
+
     t = t+1
 end
 

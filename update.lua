@@ -35,9 +35,14 @@ function update(dt)
 
     leftheld=leftclick
     leftclick=love.mouse.isDown(1)
+    rightheld=rightclick
+    rightclick=love.mouse.isDown(2)
     mox,moy=love.mouse.getPosition()
     mox=mox/scale; moy=moy/scale
 
+    if rightclick and not rightheld then
+        if active then board[active.oldpos]=active; active=nil end
+    end
     if leftclick and not leftheld then
         local h=0
         for i=1,7,2 do
@@ -65,6 +70,7 @@ function click(i,j,h)
     local pos=posstr(flr(-i/2+j),h)
     if not active then
     active=board[pos]
+    active.oldpos=pos
     board[pos]=nil
     else
     if board[pos] then

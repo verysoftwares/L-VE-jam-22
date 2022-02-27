@@ -71,14 +71,34 @@ function update(dt)
     t = t+1
 end
 
+function miner_adjacent(pos)
+    local sx,sy=strpos(pos)
+    for i,v in ipairs({posstr(sx+1,sy),posstr(sx-1,sy),posstr(sx,sy+1),posstr(sx,sy-1)}) do
+    if board[v] and board[v].type=='miner' then
+        local sx2,sy2=strpos(v)
+        cur_miner_nb={posstr(sx2+1,sy2),posstr(sx2-1,sy2),posstr(sx2,sy2+1),posstr(sx2,sy2-1)}
+        return true
+    end
+    end
+    return false
+end
+
 function click(i,j,h)
     local pos=posstr(flr(-i/2+j),h)
     if not active then
+    if board[pos] and miner_adjacent(pos) then
     active=board[pos]
     active.oldpos=pos
     board[pos]=nil
+    elseif board[pos] and board[pos].type=='miner' then
+    active=board[pos]
+    active.oldpos=pos
+    board[pos]=nil
+    end
     else
     if board[pos] then
+        if active.type~='miner' then
+        if cur_miner_nb and not find(cur_miner_nb,pos) then return end
         if board[pos].type=='stack' then
             if active.type=='stack' then
             for i,v in ipairs(active[1]) do
@@ -96,6 +116,19 @@ function click(i,j,h)
             else
             board[pos]={type='stack',{board[pos],active}}
             end
+        end
+        active=nil
+        end
+    else
+        if active.type=='stack' then
+        board[pos]={type='stack',{board[pos]}}
+        for u,v in ipairs(active[1]) do
+            ins(board[pos][1],v)
+            v.x=sw/2-12-i/2*48+j*48; v.y=h*64+24
+        end
+        else
+        board[pos]=active
+        active.x=sw/2-12-i/2*48+j*48; active.y=h*64+24
         end
         active=nil
     end

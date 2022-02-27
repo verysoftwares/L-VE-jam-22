@@ -105,9 +105,12 @@ function carddraw(v,i,orig)
     fg(0.8,0.8,0.8,1)
     if v.type=='miner' then fg(0.4,0.8,0.4,1) end
     rect('fill',orig.x+1,orig.y+1-(i-1)*2,48-2,64-2)
-    if v.type=='miner' then lg.draw(icons.miner,orig.x+24-6,orig.y+20) end
-    fg(0.32,0.16,0.16,1)
+    if v.type=='miner' then 
+        fg(1,1,1,1)
+        lg.draw(icons.miner,orig.x,orig.y) 
+    end
     if v.type~='miner' then 
+        fg(0.32,0.16,0.16,1)
         lg.setFont(fontz.credits2)
         lg.print(v.type,orig.x+24-fontz.credits2:getWidth(v.type)/2,orig.y+20) 
     end

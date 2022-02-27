@@ -7,14 +7,14 @@ function love.load()
     --lg.setFont(fontz.cursive)
     icons={}
     icons.icons=lg.newImage('wares/icons.png')
-    icons.miner=stamp12(icons.icons,0,0)
+    icons.miner=stamp48(icons.icons,0,0)
 end
 
-function stamp12(img,x,y)
-    local out=lg.newCanvas(12,12)
+function stamp48(img,x,y)
+    local out=lg.newCanvas(48,64)
     lg.setCanvas(out)
     fg(1,1,1,1)
-    lg.draw(img,-x*12,-y*12)
+    lg.draw(img,-x*48,-y*64)
     lg.setCanvas()
     return out
 end

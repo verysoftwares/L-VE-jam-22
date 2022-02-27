@@ -69,9 +69,22 @@ function click(i,j,h)
     else
     if board[pos] then
         if board[pos].type=='stack' then
+            if active.type=='stack' then
+            for i,v in ipairs(active[1]) do
+            ins(board[pos][1],v)
+            end
+            else
             ins(board[pos][1],active)
+            end
         else
+            if active.type=='stack' then
+            board[pos]={type='stack',{board[pos]}}
+            for i,v in ipairs(active[1]) do
+                ins(board[pos][1],v)
+            end
+            else
             board[pos]={type='stack',{board[pos],active}}
+            end
         end
         active=nil
     end

@@ -67,6 +67,18 @@ function gamedraw()
     lg.setCanvas(main)
     bg(0.64,0.32,0.32)
     for k,b in pairs(board) do
+        if b.type~='stack' then
+        fg(0.32,0.16,0.16,1)
+        rect('fill',b.x,b.y,48,64)
+        fg(0.8,0.8,0.8,1)
+        rect('fill',b.x+1,b.y+1,48-2,64-2)
+        end
+    end
+    local keys={}
+    for k,b in pairs(board) do ins(keys,k) end
+    table.sort(keys,function(a,b) return tonumber(sub(a,string.find(a,':')+1,#a))<tonumber(sub(b,string.find(b,':')+1,#b)) end)
+    for i,k in ipairs(keys) do
+        local b=board[k]
         if b.type=='stack' then
         for i,v in ipairs(b[1]) do
         fg(0.32,0.16,0.16,1)
@@ -74,18 +86,22 @@ function gamedraw()
         fg(0.8,0.8,0.8,1)
         rect('fill',b[1][1].x+1,b[1][1].y+1-(i-1)*2,48-2,64-2)
         end
-        else
-        fg(0.32,0.16,0.16,1)
-        rect('fill',b.x,b.y,48,64)
-        fg(0.8,0.8,0.8,1)
-        rect('fill',b.x+1,b.y+1,48-2,64-2)
         end
     end
     if active then
+        if active.type=='stack' then
+        for i,v in ipairs(active[1]) do
+        fg(0.32,0.16,0.16,1)
+        rect('fill',mox,moy-(i-1)*2,48,64)
+        fg(0.8,0.8,0.8,1)
+        rect('fill',mox+1,moy+1-(i-1)*2,48-2,64-2)
+        end
+        else
         fg(0.32,0.16,0.16,1)
         rect('fill',mox,moy,48,64)
         fg(0.8,0.8,0.8,1)
-        rect('fill',mox+1,moy+1,48-2,64-2)        
+        rect('fill',mox+1,moy+1,48-2,64-2)
+        end
     end
     lg.setCanvas()
     fg(1,1,1,1)

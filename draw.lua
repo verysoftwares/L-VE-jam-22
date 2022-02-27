@@ -66,7 +66,7 @@ end
 function gamedraw()
     lg.setCanvas(main)
     bg(0.64,0.32,0.32)
-    for i,b in ipairs(board) do
+    for k,b in pairs(board) do
         fg(0.32,0.16,0.16,1)
         rect('fill',b.x,b.y,48,64)
         fg(0.8,0.8,0.8,1)

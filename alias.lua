@@ -19,3 +19,4 @@
     fmt     = string.format
     rect    = lg.rectangle
     random  = love.math.random
+    flr     = math.floor

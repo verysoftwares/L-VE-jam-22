@@ -83,6 +83,11 @@ function miner_adjacent(pos)
     return false
 end
 
+function oldpos_adjacent(pos)
+    local px,py=strpos(active.oldpos)
+    return find({posstr(px+1,py),posstr(px-1,py),posstr(px,py+1),posstr(px,py-1)},pos)
+end
+
 function click(i,j,h)
     local pos=posstr(flr(-i/2+j),h)
     if not active then
@@ -126,11 +131,14 @@ function click(i,j,h)
             ins(board[pos][1],v)
             v.x=sw/2-12-i/2*48+j*48; v.y=h*64+24
         end
+        active=nil
         else
+        if active.type~='miner' or (active.type=='miner' and oldpos_adjacent(pos)) then
         board[pos]=active
         active.x=sw/2-12-i/2*48+j*48; active.y=h*64+24
-        end
         active=nil
+        end
+        end
     end
     end
 end

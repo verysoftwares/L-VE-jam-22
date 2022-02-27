@@ -24,4 +24,4 @@ end
 
 t = 0
 print(fmt('build no. %d',build))
-print(fmt('.-* made by verysoftwares with LOVE %d.%d .-*', love.getVersion()))
+print(fmt('.-* made by verysoftwares with LOVE %d.%d *-.', love.getVersion()))

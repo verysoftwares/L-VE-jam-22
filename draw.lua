@@ -7,9 +7,6 @@
     logo= lg.newCanvas(sw,sh)
     --logofade= lg.newCanvas(sw,sh)
 
-function draw2()
-end
-
 function logodraw()
     lg.setCanvas(main)
     bg(.9 +.4* ( t     *.1 *.2 *.6) %1, 
@@ -61,6 +58,23 @@ function logodraw()
 
     -- screenshots 60 FPS to appdata folder
       -- lg.captureScreenshot(fmt('%d.png',t))
+    if t>90 then
+      love.draw = gamedraw
+    end
+end
+
+function gamedraw()
+    lg.setCanvas(main)
+    bg(0.64,0.32,0.32)
+    for i,b in ipairs(board) do
+        fg(0.32,0.16,0.16,1)
+        rect('fill',b.x,b.y,48,64)
+        fg(0.8,0.8,0.8,1)
+        rect('fill',b.x+1,b.y+1,48-2,64-2)
+    end
+    lg.setCanvas()
+    fg(1,1,1,1)
+    lg.draw(main,0,0,0,2,2)
 end
 
 love.draw= logodraw

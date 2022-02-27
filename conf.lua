@@ -1,6 +1,6 @@
 --[[  configuration file for Löve.  ]]--
 
-sw=12*36; sh=36*12
+sw=14*36; sh=36*14
 scale=2
 
 function love.conf(t)

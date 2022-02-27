@@ -19,6 +19,10 @@ for i=1,7,2 do
 for j=1,i do
     local pos=posstr(flr(-i/2+j),h)
     board[pos]={x=sw/2-12-i/2*48+j*48,y=h*64+24}
+    board[pos].type=randomchoice({'20','50','100'})
+    if pos=='0:3' then
+        board[pos].type='miner'
+    end
 end
 h=h+1
 end
@@ -26,6 +30,7 @@ for i=5,1,-2 do
 for j=1,i do
     local pos=posstr(flr(-i/2+j),h)
     board[pos]={x=sw/2-12-i/2*48+j*48,y=h*64+24}
+    board[pos].type=randomchoice({'20','50','100'})
 end
 h=h+1
 end

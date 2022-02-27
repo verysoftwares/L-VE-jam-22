@@ -84,6 +84,10 @@ function round(n) return floor(n+0.5) end
         if tbl.i<1 then tbl.i=#tbl elseif tbl.i>#tbl then tbl.i=1 end
     end
 
+function randomchoice(tbl)
+    return tbl[random(#tbl)]
+end
+
 function HSL(h, s, l, a)
     -- by somebody online
     if s<=0 then return l,l,l,a end

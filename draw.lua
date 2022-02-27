@@ -58,7 +58,7 @@ function logodraw()
 
     -- screenshots 60 FPS to appdata folder
       -- lg.captureScreenshot(fmt('%d.png',t))
-    if t>90 then
+    if t>110 then
       love.draw = gamedraw
     end
 end
@@ -67,10 +67,25 @@ function gamedraw()
     lg.setCanvas(main)
     bg(0.64,0.32,0.32)
     for k,b in pairs(board) do
+        if b.type=='stack' then
+        for i,v in ipairs(b[1]) do
+        fg(0.32,0.16,0.16,1)
+        rect('fill',b[1][1].x,b[1][1].y-(i-1)*2,48,64)
+        fg(0.8,0.8,0.8,1)
+        rect('fill',b[1][1].x+1,b[1][1].y+1-(i-1)*2,48-2,64-2)
+        end
+        else
         fg(0.32,0.16,0.16,1)
         rect('fill',b.x,b.y,48,64)
         fg(0.8,0.8,0.8,1)
         rect('fill',b.x+1,b.y+1,48-2,64-2)
+        end
+    end
+    if active then
+        fg(0.32,0.16,0.16,1)
+        rect('fill',mox,moy,48,64)
+        fg(0.8,0.8,0.8,1)
+        rect('fill',mox+1,moy+1,48-2,64-2)        
     end
     lg.setCanvas()
     fg(1,1,1,1)

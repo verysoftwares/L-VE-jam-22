@@ -8,6 +8,7 @@ function love.load()
     icons={}
     icons.icons=lg.newImage('wares/icons.png')
     icons.miner=stamp48(icons.icons,0,0)
+    icons.cardback=stamp48(icons.icons,1,0)
 end
 
 function stamp48(img,x,y)

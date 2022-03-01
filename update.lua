@@ -18,10 +18,11 @@ local h=0
 for i=1,7,2 do
 for j=1,i do
     local pos=posstr(flr(-i/2+j),h)
-    board[pos]={x=sw/2-12-i/2*48+j*48,y=h*64+24}
-    board[pos].type=randomchoice({'20','50','100'})
+    board[pos]={x=sw/2-12-i/2*48+j*48,y=h*64+24,flip=true}
+    board[pos].type=randomchoice({'20','20','20','50','50','100'})
     if pos=='0:3' then
         board[pos].type='miner'
+        board[pos].flip=false
     end
 end
 h=h+1
@@ -29,8 +30,8 @@ end
 for i=5,1,-2 do
 for j=1,i do
     local pos=posstr(flr(-i/2+j),h)
-    board[pos]={x=sw/2-12-i/2*48+j*48,y=h*64+24}
-    board[pos].type=randomchoice({'20','50','100'})
+    board[pos]={x=sw/2-12-i/2*48+j*48,y=h*64+24,flip=true}
+    board[pos].type=randomchoice({'20','20','20','50','50','100'})
 end
 h=h+1
 end
@@ -92,9 +93,12 @@ function click(i,j,h)
     local pos=posstr(flr(-i/2+j),h)
     if not active then
     if board[pos] and miner_adjacent(pos) then
+    if board[pos].flip then board[pos].flip=false 
+    else
     active=board[pos]
     active.oldpos=pos
     board[pos]=nil
+    end
     elseif board[pos] and board[pos].type=='miner' then
     active=board[pos]
     active.oldpos=pos

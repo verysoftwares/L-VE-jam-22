@@ -13,7 +13,7 @@ if debug then
 local chunk = love.filesystem.load('buildno.soft')
 chunk()
 love.filesystem.write('buildno.soft',fmt('build=%d',build+1))
-print(fmt('build no. %d',build))
+print(fmt('build no. %d',build+1))
 end
 
 -- manage Löve state:

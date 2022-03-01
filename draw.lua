@@ -100,6 +100,11 @@ end
 function carddraw(v,i,orig)
     orig=orig or v
     i=i or 1
+    if v.flip then
+        fg(1,1,1,1)
+        lg.draw(icons.cardback,orig.x,orig.y)
+        return
+    end
     fg(0.32,0.16,0.16,1)
     rect('fill',orig.x,orig.y-(i-1)*2,48,64)
     fg(0.8,0.8,0.8,1)
@@ -109,7 +114,7 @@ function carddraw(v,i,orig)
         fg(1,1,1,1)
         lg.draw(icons.miner,orig.x,orig.y) 
     end
-    if v.type~='miner' then 
+    if v.type~='miner' then
         fg(0.32,0.16,0.16,1)
         lg.setFont(fontz.credits2)
         lg.print(v.type,orig.x+24-fontz.credits2:getWidth(v.type)/2,orig.y+20) 

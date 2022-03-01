@@ -92,43 +92,44 @@ end
 function click(i,j,h)
     local pos=posstr(flr(-i/2+j),h)
     if not active then
-    if board[pos] and miner_adjacent(pos) then
-    if board[pos].flip then board[pos].flip=false 
-    else
-    active=board[pos]
-    active.oldpos=pos
-    board[pos]=nil
-    end
-    elseif board[pos] and board[pos].type=='miner' then
-    active=board[pos]
-    active.oldpos=pos
-    board[pos]=nil
-    end
+        if board[pos] and miner_adjacent(pos) then
+            if board[pos].flip then board[pos].flip=false 
+            else
+            active=board[pos]
+            active.oldpos=pos
+            board[pos]=nil
+            end
+        elseif board[pos] and board[pos].type=='miner' then
+        active=board[pos]
+        active.oldpos=pos
+        board[pos]=nil
+        end
     else
     if board[pos] then
         if active.type~='miner' then
-        if cur_miner_nb and not find(cur_miner_nb,pos) then return end
-        if board[pos].type=='stack' then
-            if active.type=='stack' then
-            for i,v in ipairs(active[1]) do
-            ins(board[pos][1],v)
-            end
-            else
-            ins(board[pos][1],active)
-            end
-        else
-            if active.type=='stack' then
-            board[pos]={type='stack',{board[pos]}}
-            for i,v in ipairs(active[1]) do
+            if cur_miner_nb and not find(cur_miner_nb,pos) then return end
+            if board[pos].type=='stack' then
+                if active.type=='stack' then
+                for i,v in ipairs(active[1]) do
                 ins(board[pos][1],v)
-            end
+                end
+                else
+                ins(board[pos][1],active)
+                end
             else
-            board[pos]={type='stack',{board[pos],active}}
+                if active.type=='stack' then
+                board[pos]={type='stack',{board[pos]}}
+                for i,v in ipairs(active[1]) do
+                    ins(board[pos][1],v)
+                end
+                else
+                board[pos]={type='stack',{board[pos],active}}
+                end
             end
-        end
         active=nil
         end
     else
+        if cur_miner_nb and not find(cur_miner_nb,pos) then return end
         if active.type=='stack' then
         board[pos]={type='stack',{board[pos]}}
         for u,v in ipairs(active[1]) do

@@ -95,7 +95,7 @@ end
 
 function oldpos_adjacent(pos)
     local px,py=strpos(active.oldpos)
-    local places={posstr(px,py),posstr(px+1,py),posstr(px-1,py),posstr(px,py+1),posstr(px,py-1)}
+    places={posstr(px,py),posstr(px+1,py),posstr(px-1,py),posstr(px,py+1),posstr(px,py-1)}
     if board[posstr(px+1,py)] then ins(places,posstr(px+2,py)) end
     if board[posstr(px-1,py)] then ins(places,posstr(px-2,py)) end
     if board[posstr(px,py+1)] then ins(places,posstr(px,py+2)) end

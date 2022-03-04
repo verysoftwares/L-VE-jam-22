@@ -212,7 +212,11 @@ function hilight_tiles()
         if (not board[posstr(mx,my-1)]) or (not board[posstr(mx,my-1)].flip) then hilight(col,mx,my-1) end
 
         else
-
+            oldpos_adjacent() -- sets 'places'
+            for i,v in ipairs(places) do
+                local vx,vy=strpos(v)
+                if not board[v] then hilight('white',vx,vy) end
+            end
         end
     end
 end
@@ -226,6 +230,7 @@ function hilight(col,hx,hy)
         if board[posstr(flr(-i/2+j),h)] and board[posstr(flr(-i/2+j),h)].type=='stack' then cy=cy-(#board[posstr(flr(-i/2+j),h)][1]-1)*2 end
         if col=='yellow' then fg(0.64,0.64,0.32,1) end
         if col=='green' then fg(0.32,0.64,0.32,1) end
+        if col=='white' then fg(0.8,0.8,0.8,1) end
         lg.setScissor(cx,cy,48,64)
         for ci=0,48,16 do
         rect('fill',cx+ci-t%16,cy,8,4)
@@ -248,6 +253,7 @@ function hilight(col,hx,hy)
         if board[posstr(flr(-i/2+j),h)] and board[posstr(flr(-i/2+j),h)].type=='stack' then cy=cy-(#board[posstr(flr(-i/2+j),h)][1]-1)*2 end
         if col=='yellow' then fg(0.64,0.64,0.32,1) end
         if col=='green' then fg(0.32,0.64,0.32,1) end
+        if col=='white' then fg(0.8,0.8,0.8,1) end
         lg.setScissor(cx,cy,48,64)
         for ci=0,48,16 do
         rect('fill',cx+ci-t%16,cy,8,4)

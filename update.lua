@@ -17,6 +17,7 @@ function reset()
     score=0
     step=0
     goal=50
+    goaladd=100
 
     board = {}
     local h=0
@@ -120,7 +121,8 @@ function click(i,j,h)
     local pos=posstr(flr(-i/2+j),h)
     if not active then
         if board[pos] and miner_adjacent(pos) then
-            if board[pos].flip then board[pos].flip=false; inc_step() 
+            if board[pos].flip then 
+            board[pos].flip=false; board[pos].flipanim=1; inc_step() 
             else
             active=board[pos]
             active.oldpos=pos
@@ -268,7 +270,8 @@ function postquake()
             leftclick=love.mouse.isDown(1)
             if leftclick and not leftheld then 
                 love.update=update
-                goal=goal+100
+                goal=score+goaladd
+                goaladd=goaladd+100
             end
         end
     end

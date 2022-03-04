@@ -5,9 +5,9 @@
     require 'load'
     require 'alias'
     require 'utility'
-    require 'deep'
+    --require 'deep'
 
-debug = true
+debug = false
 
 if debug then
 local chunk = love.filesystem.load('buildno.soft')

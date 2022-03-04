@@ -114,6 +114,7 @@ function collect(pos)
     else
         score=score+tonumber(board[pos].type)
     end
+    audio.cashin:play()
     board[pos]=nil
 end
 

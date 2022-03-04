@@ -8,6 +8,7 @@
     bg      = lg.clear
     fg      = lg.setColor
     sin     = math.sin
+    cos     = math.cos
     ins     = table.insert
     shade   = lg.setShader
     floor   = math.floor

@@ -61,7 +61,8 @@ function logodraw()
     -- screenshots 60 FPS to appdata folder
       -- lg.captureScreenshot(fmt('%d.png',t))
     if t>110 then
-      love.draw = gamedraw
+        audio.bgm:play()
+        love.draw = gamedraw
     end
 end
 

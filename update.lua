@@ -270,7 +270,7 @@ function postquake()
             leftclick=love.mouse.isDown(1)
             if leftclick and not leftheld then 
                 love.update=update
-                goal=score+goaladd
+                goal=score+50+goaladd
                 goaladd=goaladd+100
             end
         end

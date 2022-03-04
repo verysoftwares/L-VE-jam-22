@@ -197,10 +197,23 @@ end
 function hilight_tiles()
     if active==nil then
         local mx,my=strpos(minerpos())
-        if board[posstr(mx+1,my)] then hilight('yellow',mx+1,my) end
-        if board[posstr(mx-1,my)] then hilight('yellow',mx-1,my) end
-        if board[posstr(mx,my+1)] then hilight('yellow',mx,my+1) end
-        if board[posstr(mx,my-1)] then hilight('yellow',mx,my-1) end
+        local col='yellow'
+        if board[posstr(mx+1,my)] then if not board[posstr(mx+1,my)].flip then col='green' else col='yellow' end hilight(col,mx+1,my) end
+        if board[posstr(mx-1,my)] then if not board[posstr(mx-1,my)].flip then col='green' else col='yellow' end hilight(col,mx-1,my) end
+        if board[posstr(mx,my+1)] then if not board[posstr(mx,my+1)].flip then col='green' else col='yellow' end hilight(col,mx,my+1) end
+        if board[posstr(mx,my-1)] then if not board[posstr(mx,my-1)].flip then col='green' else col='yellow' end hilight(col,mx,my-1) end
+    else
+        if active.type~='miner' then
+        local mx,my=strpos(minerpos())
+        local col='green'
+        if (not board[posstr(mx+1,my)]) or (not board[posstr(mx+1,my)].flip) then hilight(col,mx+1,my) end
+        if (not board[posstr(mx-1,my)]) or (not board[posstr(mx-1,my)].flip) then hilight(col,mx-1,my) end
+        if (not board[posstr(mx,my+1)]) or (not board[posstr(mx,my+1)].flip) then hilight(col,mx,my+1) end
+        if (not board[posstr(mx,my-1)]) or (not board[posstr(mx,my-1)].flip) then hilight(col,mx,my-1) end
+
+        else
+
+        end
     end
 end
 
@@ -210,8 +223,9 @@ function hilight(col,hx,hy)
     for j=1,i do
         if posstr(flr(-i/2+j),h)==posstr(hx,hy) then
         local cx,cy=sw/2-12-i/2*48+j*48,h*64+24
-        if board[posstr(flr(-i/2+j),h)].type=='stack' then cy=cy-(#board[posstr(flr(-i/2+j),h)][1]-1)*2 end
+        if board[posstr(flr(-i/2+j),h)] and board[posstr(flr(-i/2+j),h)].type=='stack' then cy=cy-(#board[posstr(flr(-i/2+j),h)][1]-1)*2 end
         if col=='yellow' then fg(0.64,0.64,0.32,1) end
+        if col=='green' then fg(0.32,0.64,0.32,1) end
         lg.setScissor(cx,cy,48,64)
         for ci=0,48,16 do
         rect('fill',cx+ci-t%16,cy,8,4)
@@ -231,8 +245,9 @@ function hilight(col,hx,hy)
     for j=1,i do
         if posstr(flr(-i/2+j),h)==posstr(hx,hy) then
         local cx,cy=sw/2-12-i/2*48+j*48,h*64+24
-        if board[posstr(flr(-i/2+j),h)].type=='stack' then cy=cy-(#board[posstr(flr(-i/2+j),h)][1]-1)*2 end
+        if board[posstr(flr(-i/2+j),h)] and board[posstr(flr(-i/2+j),h)].type=='stack' then cy=cy-(#board[posstr(flr(-i/2+j),h)][1]-1)*2 end
         if col=='yellow' then fg(0.64,0.64,0.32,1) end
+        if col=='green' then fg(0.32,0.64,0.32,1) end
         lg.setScissor(cx,cy,48,64)
         for ci=0,48,16 do
         rect('fill',cx+ci-t%16,cy,8,4)

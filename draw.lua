@@ -163,7 +163,7 @@ function carddraw(v,i,orig)
         return
     else 
         if v.flipanim then
-        lg.draw(v.img,orig.x,orig.y,0,sin(v.flipanim/40*pi-pi/2),1,(1-sin(v.flipanim/40*pi-pi/2))*48)
+        lg.draw(v.img,orig.x+24,orig.y,0,sin(v.flipanim/40*pi-pi/2),1,24)
         v.flipanim=v.flipanim+1
         if v.flipanim==20 then
             v.img=lg.newCanvas(48,64)

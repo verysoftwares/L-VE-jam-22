@@ -95,7 +95,7 @@ end
 
 function oldpos_adjacent(pos)
     local px,py=strpos(active.oldpos)
-    local places={posstr(px+1,py),posstr(px-1,py),posstr(px,py+1),posstr(px,py-1)}
+    local places={posstr(px,py),posstr(px+1,py),posstr(px-1,py),posstr(px,py+1),posstr(px,py-1)}
     if board[posstr(px+1,py)] then ins(places,posstr(px+2,py)) end
     if board[posstr(px-1,py)] then ins(places,posstr(px-2,py)) end
     if board[posstr(px,py+1)] then ins(places,posstr(px,py+2)) end
@@ -145,8 +145,8 @@ function click(i,j,h)
                 else
                 ins(board[pos][1],active)
                 end
+                if active.oldpos~=pos then inc_step() end
                 active=nil
-                inc_step()
             else
                 if not board[pos].flip then
                 if active.type=='stack' then
@@ -154,12 +154,12 @@ function click(i,j,h)
                 for i,v in ipairs(active[1]) do
                     ins(board[pos][1],v)
                 end
+                if active.oldpos~=pos then inc_step() end
                 active=nil
-                inc_step()
                 else
                 board[pos]={type='stack',{board[pos],active}}
+                if active.oldpos~=pos then inc_step() end
                 active=nil
-                inc_step()
                 end
                 end
             end
@@ -172,8 +172,8 @@ function click(i,j,h)
             ins(board[pos][1],v)
             v.x=sw/2-12-i/2*48+j*48; v.y=h*64+24
         end
+        if active.oldpos~=pos then inc_step() end
         active=nil
-        inc_step()
         else
         if active.type~='miner' or (active.type=='miner' and oldpos_adjacent(pos)) then
         local l=leaped(pos)
@@ -186,8 +186,8 @@ function click(i,j,h)
         end
         board[pos]=active
         active.x=sw/2-12-i/2*48+j*48; active.y=h*64+24
+        if active.oldpos~=pos then inc_step() end
         active=nil
-        inc_step()
         end
         end
     end

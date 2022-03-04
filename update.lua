@@ -1,5 +1,7 @@
 --[[  managing game flow updates.  ]]--
 
+score=0
+
 function strpos(pos)
     local delim=string.find(pos,':')
     local x=sub(pos,1,delim-1)
@@ -86,7 +88,21 @@ end
 
 function oldpos_adjacent(pos)
     local px,py=strpos(active.oldpos)
-    return find({posstr(px+1,py),posstr(px-1,py),posstr(px,py+1),posstr(px,py-1)},pos)
+    return find({posstr(px+1,py),posstr(px-1,py),posstr(px,py+1),posstr(px,py-1),posstr(px+2,py),posstr(px-2,py),posstr(px,py+2),posstr(px,py-2)},pos)
+end
+
+function leaped(pos)
+    local px,py=strpos(active.oldpos)
+    return find({posstr(px+2,py),posstr(px-2,py),posstr(px,py+2),posstr(px,py-2)},pos)
+end
+
+function collect(pos)
+    if board[pos].type=='stack' then
+        score=score+tonumber(board[pos][1][#board[pos][1]].type)*#board[pos][1]
+    else
+        score=score+tonumber(board[pos])
+    end
+    board[pos]=nil
 end
 
 function click(i,j,h)
@@ -116,20 +132,24 @@ function click(i,j,h)
                 else
                 ins(board[pos][1],active)
                 end
+                active=nil
             else
+                if not board[pos].flip then
                 if active.type=='stack' then
                 board[pos]={type='stack',{board[pos]}}
                 for i,v in ipairs(active[1]) do
                     ins(board[pos][1],v)
                 end
+                active=nil
                 else
                 board[pos]={type='stack',{board[pos],active}}
+                active=nil
+                end
                 end
             end
-        active=nil
         end
     else
-        if cur_miner_nb and not find(cur_miner_nb,pos) then return end
+        if cur_miner_nb and active.type~='miner' and not find(cur_miner_nb,pos) then return end
         if active.type=='stack' then
         board[pos]={type='stack',{board[pos]}}
         for u,v in ipairs(active[1]) do
@@ -139,6 +159,14 @@ function click(i,j,h)
         active=nil
         else
         if active.type~='miner' or (active.type=='miner' and oldpos_adjacent(pos)) then
+        local l=leaped(pos)
+        if active.type=='miner' and leaped(pos) then
+            local ox,oy=strpos(active.oldpos)
+            if l==1 then collect(posstr(ox+1,oy)) end
+            if l==2 then collect(posstr(ox-1,oy)) end
+            if l==3 then collect(posstr(ox,oy+1)) end
+            if l==4 then collect(posstr(ox,oy-1)) end
+        end
         board[pos]=active
         active.x=sw/2-12-i/2*48+j*48; active.y=h*64+24
         active=nil

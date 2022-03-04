@@ -92,6 +92,13 @@ function gamedraw()
         carddraw(active,nil,{x=mox,y=moy})
         end
     end
+
+    lg.setFont(fontz.xillapro)
+    fg(0.8,0.8,0.8,1)    
+    rect('fill',4,4,96,20)
+    fg(0.64,0.32,0.32,1)
+    lg.print(fmt('%.5d',score),4+2+12+4+2,4-6)
+
     lg.setCanvas()
     fg(1,1,1,1)
     lg.draw(main,0,0,0,2,2)

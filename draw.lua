@@ -4,6 +4,7 @@
 -- draw setup
     lg.setDefaultFilter('nearest')
     main= lg.newCanvas(sw,sh)
+    result= lg.newCanvas(sw,sh)
     logo= lg.newCanvas(sw,sh)
     --logofade= lg.newCanvas(sw,sh)
 
@@ -95,15 +96,51 @@ function gamedraw()
 
     lg.setFont(fontz.xillapro)
     fg(0.8,0.8,0.8,1)    
-    rect('fill',4,4,96,20)
+    rect('fill',4,4,160,28)
     fg(0.64,0.32,0.32,1)
-    lg.print(fmt('%.5d',score),4+2+12+4+2,4-6)
+    lg.print(fmt('Score: %.5d',score),4+2+12+4+2,4-6+4+2)
 
     fg(0.8,0.8,0.8,1)    
-    rect('fill',4,4+32,96,20)
+    rect('fill',4,4+32,160,28)
     fg(0.64,0.32,0.32,1)
-    lg.print(fmt('%d/25',step),4+2+12+4+2,4-6+32)
+    lg.print(fmt('Goal: %.5d',goal),4+2+12+4+2,4-6+32+4+2)
 
+    fg(0.8,0.8,0.8,1)    
+    rect('fill',4,4+32+32,160,28)
+    fg(0.64,0.32,0.32,1)
+    lg.print(fmt('Step: %d/25',step),4+2+12+4+2,4-6+32+32+4+2)
+
+    if love.update==postquake then
+        lg.setCanvas(result)
+        bg(0.4,0.4,0.4,0.4)
+        local msg;
+        if t-sc_t>0 then
+        fg(0.8,0.8,0.8,1)
+        rect('fill',0,sh/2-32-2,sw,32)
+        fg(0.64,0.32,0.32,1)
+        msg=fmt('The goal was %.5d points.',goal)
+        lg.print(msg,sw/2-fontz.xillapro:getWidth(msg)/2,sh/2-32-2)
+        end
+        if t-sc_t>=90 then
+        fg(0.8,0.8,0.8,1)
+        rect('fill',0,sh/2,sw,32)
+        fg(0.64,0.32,0.32,1)
+        msg=fmt('Your score was %.5d points.',score)
+        lg.print(msg,sw/2-fontz.xillapro:getWidth(msg)/2,sh/2+2)
+        end
+        if t-sc_t>=180 then
+        fg(0.8,0.8,0.8,1)
+        rect('fill',0,sh/2+32+2,sw,32)
+        fg(0.64,0.32,0.32,1)
+        if goal>score then
+            msg='-> Game over (R to reset).'
+        else
+            msg='-> Continue (left-click).'
+        end
+        lg.print(msg,sw/2-fontz.xillapro:getWidth(msg)/2,sh/2+32+2)
+        end
+
+    end
 
     lg.setCanvas()
     fg(1,1,1,1)
@@ -111,6 +148,9 @@ function gamedraw()
         lg.translate(random(16)-8,0)
     end
     lg.draw(main,0,0,0,2,2)
+    if love.update==postquake then
+        lg.draw(result,0,0,0,2,2)
+    end
 end
 
 function carddraw(v,i,orig)

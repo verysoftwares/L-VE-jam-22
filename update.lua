@@ -1,8 +1,5 @@
 --[[  managing game flow updates.  ]]--
 
-score=0
-step=0
-
 function strpos(pos)
     local delim=string.find(pos,':')
     local x=sub(pos,1,delim-1)
@@ -16,28 +13,36 @@ function posstr(x,y)
     return fmt('%d:%d',x,y)
 end
 
-board = {}
-local h=0
-for i=1,7,2 do
-for j=1,i do
-    local pos=posstr(flr(-i/2+j),h)
-    board[pos]={x=sw/2-12-i/2*48+j*48,y=h*64+24,flip=true}
-    board[pos].type=randomchoice({'20','20','20','50','50','100'})
-    if pos=='0:3' then
-        board[pos].type='miner'
-        board[pos].flip=false
+function reset()
+    score=0
+    step=0
+    goal=50
+
+    board = {}
+    local h=0
+    for i=1,7,2 do
+    for j=1,i do
+        local pos=posstr(flr(-i/2+j),h)
+        board[pos]={x=sw/2-12-i/2*48+j*48,y=h*64+24,flip=true}
+        board[pos].type=randomchoice({'20','20','20','50','50','100'})
+        if pos=='0:3' then
+            board[pos].type='miner'
+            board[pos].flip=false
+        end
+    end
+    h=h+1
+    end
+    for i=5,1,-2 do
+    for j=1,i do
+        local pos=posstr(flr(-i/2+j),h)
+        board[pos]={x=sw/2-12-i/2*48+j*48,y=h*64+24,flip=true}
+        board[pos].type=randomchoice({'20','20','20','50','50','100'})
+    end
+    h=h+1
     end
 end
-h=h+1
-end
-for i=5,1,-2 do
-for j=1,i do
-    local pos=posstr(flr(-i/2+j),h)
-    board[pos]={x=sw/2-12-i/2*48+j*48,y=h*64+24,flip=true}
-    board[pos].type=randomchoice({'20','20','20','50','50','100'})
-end
-h=h+1
-end
+
+reset()
 
 function update(dt)
     if tapped('escape') then love.event.push('quit') end
@@ -244,7 +249,7 @@ function earthquake()
         e=e+1
     end
     if e==25 then
-    c=nil; e=nil; step=0; love.update=update
+    c=nil; e=nil; step=0; love.update=postquake; sc_t=t+1
     end
     t=t+1
 end
@@ -252,6 +257,22 @@ end
 function inc_step()
     step=step+1
     if step==25 then love.update=earthquake; sc_t=t+1 end
+end
+
+function postquake()
+    if t-sc_t>=180 then
+        if goal>score then
+            if love.keyboard.isDown('r') then reset(); love.update=update end
+        else
+            leftheld=leftclick
+            leftclick=love.mouse.isDown(1)
+            if leftclick and not leftheld then 
+                love.update=update
+                goal=goal+100
+            end
+        end
+    end
+    t=t+1
 end
 
 love.update= update

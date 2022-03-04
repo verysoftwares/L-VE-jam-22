@@ -88,7 +88,12 @@ end
 
 function oldpos_adjacent(pos)
     local px,py=strpos(active.oldpos)
-    return find({posstr(px+1,py),posstr(px-1,py),posstr(px,py+1),posstr(px,py-1),posstr(px+2,py),posstr(px-2,py),posstr(px,py+2),posstr(px,py-2)},pos)
+    local places={posstr(px+1,py),posstr(px-1,py),posstr(px,py+1),posstr(px,py-1)}
+    if board[posstr(px+1,py)] then ins(places,posstr(px+2,py)) end
+    if board[posstr(px-1,py)] then ins(places,posstr(px-2,py)) end
+    if board[posstr(px,py+1)] then ins(places,posstr(px,py+2)) end
+    if board[posstr(px,py-1)] then ins(places,posstr(px,py-2)) end
+    return find(places,pos)
 end
 
 function leaped(pos)
@@ -100,7 +105,7 @@ function collect(pos)
     if board[pos].type=='stack' then
         score=score+tonumber(board[pos][1][#board[pos][1]].type)*#board[pos][1]
     else
-        score=score+tonumber(board[pos])
+        score=score+tonumber(board[pos].type)
     end
     board[pos]=nil
 end

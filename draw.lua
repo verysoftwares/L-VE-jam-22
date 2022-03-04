@@ -107,6 +107,9 @@ function gamedraw()
 
     lg.setCanvas()
     fg(1,1,1,1)
+    if love.update==earthquake then
+        lg.translate(random(8)-4,0)
+    end
     lg.draw(main,0,0,0,2,2)
 end
 

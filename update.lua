@@ -188,12 +188,70 @@ function click(i,j,h)
 end
 
 function earthquake()
-    print('brrr')
+    c=c or 1
+    d=0
+    e=e or 1
+    if (t-sc_t)>30 and (t-sc_t)<=102 and (t-sc_t)%3==0 then
+        local h=0
+        for i=1,7,2 do
+        for j=1,i do
+            local pos=posstr(flr(-i/2+j),h)
+            if board[pos] and board[pos].type~='miner' then board[pos]=nil end
+            d=d+1
+            if d>c then goto skip end
+        end
+        h=h+1
+        end
+        for i=5,1,-2 do
+        for j=1,i do
+            local pos=posstr(flr(-i/2+j),h)
+            if board[pos] and board[pos].type~='miner' then board[pos]=nil end
+            d=d+1
+            if d>c then goto skip end
+        end
+        h=h+1
+        end
+        ::skip::
+        c=c+1
+    end
+    if (t-sc_t)>102 and (t-sc_t)%3==0 then
+        local h=0
+        for i=1,7,2 do
+        for j=1,i do
+            local pos=posstr(flr(-i/2+j),h)
+            if not board[pos] then
+            board[pos]={x=sw/2-12-i/2*48+j*48,y=h*64+24,flip=true}
+            board[pos].type=randomchoice({'20','20','20','50','50','100'})
+            end
+            d=d+1
+            if d>e then goto skip end
+        end
+        h=h+1
+        end
+        for i=5,1,-2 do
+        for j=1,i do
+            local pos=posstr(flr(-i/2+j),h)
+            if not board[pos] then
+            board[pos]={x=sw/2-12-i/2*48+j*48,y=h*64+24,flip=true}
+            board[pos].type=randomchoice({'20','20','20','50','50','100'})
+            end
+            d=d+1
+            if d>e then goto skip end
+        end
+        h=h+1
+        end
+        ::skip::
+        e=e+1
+    end
+    if e==25 then
+    c=nil; e=nil; step=0; love.update=update
+    end
+    t=t+1
 end
 
 function inc_step()
     step=step+1
-    if step==25 then earthquake(); step=0 end
+    if step==25 then love.update=earthquake; sc_t=t+1 end
 end
 
 love.update= update

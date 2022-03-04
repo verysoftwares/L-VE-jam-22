@@ -157,23 +157,38 @@ function carddraw(v,i,orig)
     orig=orig or v
     i=i or 1
     if v.flip then
+        v.img=v.img or icons.cardback
         fg(1,1,1,1)
-        lg.draw(icons.cardback,orig.x,orig.y)
+        lg.draw(v.img,orig.x,orig.y)
         return
-    end
-    fg(0.32,0.16,0.16,1)
-    rect('fill',orig.x,orig.y-(i-1)*2,48,64)
-    fg(0.8,0.8,0.8,1)
-    if v.type=='miner' then fg(0.4,0.8,0.4,1) end
-    rect('fill',orig.x+1,orig.y+1-(i-1)*2,48-2,64-2)
-    if v.type=='miner' then 
-        fg(1,1,1,1)
-        lg.draw(icons.miner,orig.x,orig.y) 
+    else 
+        if v.flipanim then
+        lg.draw(v.img,orig.x,orig.y,0,sin(v.flipanim/40*pi-pi/2),1,(1-sin(v.flipanim/40*pi-pi/2))*48)
+        v.flipanim=v.flipanim+1
+        if v.flipanim==20 then
+            v.img=lg.newCanvas(48,64)
+            lg.setCanvas(v.img)
+            fg(0.32,0.16,0.16,1)
+            rect('fill',0,0,48,64)
+            fg(0.8,0.8,0.8,1)
+            rect('fill',1,1,48-2,64-2)
+            fg(0.32,0.16,0.16,1)
+            lg.setFont(fontz.credits2)
+            lg.print(v.type,24-fontz.credits2:getWidth(v.type)/2,20) 
+            lg.setCanvas(main)
+        end
+        if v.flipanim>40 then v.flipanim=nil end
+        return
+        end
     end
     if v.type~='miner' then
-        fg(0.32,0.16,0.16,1)
-        lg.setFont(fontz.credits2)
-        lg.print(v.type,orig.x+24-fontz.credits2:getWidth(v.type)/2,orig.y+20) 
+        lg.draw(v.img,orig.x,orig.y-(i-1)*2)
+    end
+    if v.type=='miner' then 
+        fg(0.4,0.8,0.4,1) 
+        rect('fill',orig.x+1,orig.y+1-(i-1)*2,48-2,64-2)
+        fg(1,1,1,1)
+        lg.draw(icons.miner,orig.x,orig.y) 
     end
 end
 

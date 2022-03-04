@@ -1,6 +1,7 @@
 --[[  managing game flow updates.  ]]--
 
 score=0
+step=0
 
 function strpos(pos)
     local delim=string.find(pos,':')
@@ -114,7 +115,7 @@ function click(i,j,h)
     local pos=posstr(flr(-i/2+j),h)
     if not active then
         if board[pos] and miner_adjacent(pos) then
-            if board[pos].flip then board[pos].flip=false 
+            if board[pos].flip then board[pos].flip=false; inc_step() 
             else
             active=board[pos]
             active.oldpos=pos
@@ -138,6 +139,7 @@ function click(i,j,h)
                 ins(board[pos][1],active)
                 end
                 active=nil
+                inc_step()
             else
                 if not board[pos].flip then
                 if active.type=='stack' then
@@ -146,9 +148,11 @@ function click(i,j,h)
                     ins(board[pos][1],v)
                 end
                 active=nil
+                inc_step()
                 else
                 board[pos]={type='stack',{board[pos],active}}
                 active=nil
+                inc_step()
                 end
                 end
             end
@@ -162,6 +166,7 @@ function click(i,j,h)
             v.x=sw/2-12-i/2*48+j*48; v.y=h*64+24
         end
         active=nil
+        inc_step()
         else
         if active.type~='miner' or (active.type=='miner' and oldpos_adjacent(pos)) then
         local l=leaped(pos)
@@ -175,10 +180,20 @@ function click(i,j,h)
         board[pos]=active
         active.x=sw/2-12-i/2*48+j*48; active.y=h*64+24
         active=nil
+        inc_step()
         end
         end
     end
     end
+end
+
+function earthquake()
+    print('brrr')
+end
+
+function inc_step()
+    step=step+1
+    if step==25 then earthquake(); step=0 end
 end
 
 love.update= update

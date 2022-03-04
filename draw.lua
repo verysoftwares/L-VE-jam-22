@@ -99,6 +99,12 @@ function gamedraw()
     fg(0.64,0.32,0.32,1)
     lg.print(fmt('%.5d',score),4+2+12+4+2,4-6)
 
+    fg(0.8,0.8,0.8,1)    
+    rect('fill',4,4+32,96,20)
+    fg(0.64,0.32,0.32,1)
+    lg.print(fmt('%d/25',step),4+2+12+4+2,4-6+32)
+
+
     lg.setCanvas()
     fg(1,1,1,1)
     lg.draw(main,0,0,0,2,2)

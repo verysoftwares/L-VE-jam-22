@@ -110,6 +110,8 @@ function gamedraw()
     fg(0.64,0.32,0.32,1)
     lg.print(fmt('Step: %d/25',step),4+2+12+4+2,4-6+32+32+4+2)
 
+    hilight_tiles()
+
     if love.update==postquake then
         lg.setCanvas(result)
         bg(0.4,0.4,0.4,0.4)
@@ -189,6 +191,69 @@ function carddraw(v,i,orig)
         rect('fill',orig.x+1,orig.y+1-(i-1)*2,48-2,64-2)
         fg(1,1,1,1)
         lg.draw(icons.miner,orig.x,orig.y) 
+    end
+end
+
+function hilight_tiles()
+    if active==nil then
+        local mx,my=strpos(minerpos())
+        if board[posstr(mx+1,my)] then hilight('yellow',mx+1,my) end
+        if board[posstr(mx-1,my)] then hilight('yellow',mx-1,my) end
+        if board[posstr(mx,my+1)] then hilight('yellow',mx,my+1) end
+        if board[posstr(mx,my-1)] then hilight('yellow',mx,my-1) end
+    end
+end
+
+function hilight(col,hx,hy)
+    local h=0
+    for i=1,7,2 do
+    for j=1,i do
+        if posstr(flr(-i/2+j),h)==posstr(hx,hy) then
+        local cx,cy=sw/2-12-i/2*48+j*48,h*64+24
+        if board[posstr(flr(-i/2+j),h)].type=='stack' then cy=cy-(#board[posstr(flr(-i/2+j),h)][1]-1)*2 end
+        if col=='yellow' then fg(0.64,0.64,0.32,1) end
+        lg.setScissor(cx,cy,48,64)
+        for ci=0,48,16 do
+        rect('fill',cx+ci-t%16,cy,8,4)
+        rect('fill',cx-16+ci+t%16,cy+64-4,8,4)
+        end
+        for cj=0,64,16 do
+        rect('fill',cx,cy+cj+t%16,4,8)
+        rect('fill',cx+48-4,cy-4+cj-t%16,4,8)
+        end
+        lg.setScissor()
+        return
+        end
+    end
+    h=h+1
+    end
+    for i=5,1,-2 do
+    for j=1,i do
+        if posstr(flr(-i/2+j),h)==posstr(hx,hy) then
+        local cx,cy=sw/2-12-i/2*48+j*48,h*64+24
+        if board[posstr(flr(-i/2+j),h)].type=='stack' then cy=cy-(#board[posstr(flr(-i/2+j),h)][1]-1)*2 end
+        if col=='yellow' then fg(0.64,0.64,0.32,1) end
+        lg.setScissor(cx,cy,48,64)
+        for ci=0,48,16 do
+        rect('fill',cx+ci-t%16,cy,8,4)
+        rect('fill',cx-16+ci+t%16,cy+64-4,8,4)
+        end
+        for cj=0,64,16 do
+        rect('fill',cx,cy+cj+t%16,4,8)
+        rect('fill',cx+48-4,cy-4+cj-t%16,4,8)
+        end
+        lg.setScissor()
+        return
+        end
+    end
+    h=h+1
+    end
+
+end
+
+function minerpos()
+    for k,b in pairs(board) do
+        if b.type=='miner' then return k end
     end
 end
 

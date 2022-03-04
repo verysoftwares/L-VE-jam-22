@@ -13,6 +13,7 @@ function love.load()
     audio.bgm=love.audio.newSource('wares/stockpile.ogg','stream')
     audio.bgm:setLooping(true)
     audio.cashin=love.audio.newSource('wares/201159__kiddpark__cash-register.mp3','static')
+    audio.quake=love.audio.newSource('wares/514381__zatar__earthquake3.wav','static')
 end
 
 function stamp48(img,x,y)

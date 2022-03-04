@@ -114,7 +114,7 @@ function collect(pos)
     else
         score=score+tonumber(board[pos].type)
     end
-    audio.cashin:play()
+    audio.cashin:stop(); audio.cashin:play()
     board[pos]=nil
 end
 
@@ -259,7 +259,7 @@ end
 
 function inc_step()
     step=step+1
-    if step==25 then love.update=earthquake; sc_t=t+1 end
+    if step==25 then love.update=earthquake; audio.quake:play(); sc_t=t+1 end
 end
 
 function postquake()
